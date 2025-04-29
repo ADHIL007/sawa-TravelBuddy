@@ -1,87 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:sawa/core/Routes/routes.dart';
+import 'package:sawa/screens/Settings/Settings.dart';
+import 'package:sawa/screens/home/home_screen.dart';
+import 'package:sawa/screens/notifications/notifications.dart';
 
-class BottomNavigation extends StatefulWidget {
-  final int currentIndex;
 
-  const BottomNavigation({Key? key, required this.currentIndex}) : super(key: key);
+class BottomNavigationWrapper extends StatefulWidget {
+  const BottomNavigationWrapper({Key? key}) : super(key: key);
 
   @override
-  State<BottomNavigation> createState() => _BottomNavigationState();
+  State<BottomNavigationWrapper> createState() => _BottomNavigationWrapperState();
 }
 
-class _BottomNavigationState extends State<BottomNavigation> {
-  late int _selectedIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedIndex = widget.currentIndex;
-  }
+class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
+  int _currentIndex = 0;
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    const Notifications(),
+    const SettingsScreen(),
+  ];
 
   void _onItemTapped(int index) {
-    if (_selectedIndex == index) return;
-
     setState(() {
-      _selectedIndex = index;
+      _currentIndex = index;
     });
-
-    switch (index) {
-      case 0:
-        Navigator.pushNamed(context, Routes.home);
-        break;
-      case 1:
-        Navigator.pushNamed(context, Routes.news);
-        break;
-      case 2:
-        Navigator.pushNamed(context, Routes.notifications);
-        break;
-      case 3:
-        Navigator.pushNamed(context, Routes.settings);
-        break;
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: _selectedIndex,
-      onTap: _onItemTapped,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Theme.of(context).colorScheme.secondary,
-      unselectedItemColor: Colors.grey,
-      selectedLabelStyle: TextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.w600,
-        color: Theme.of(context).colorScheme.secondary,
+    return Scaffold(
+      body: _screens[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: "Notifications"),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings"),
+        ],
       ),
-      unselectedLabelStyle: const TextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-        color: Colors.grey,
-      ),
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          activeIcon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.newspaper_outlined),
-          activeIcon: Icon(Icons.newspaper),
-          label: 'News',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.notifications_outlined),
-          activeIcon: Icon(Icons.notifications),
-          label: 'Notifications',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings_outlined),
-          activeIcon: Icon(Icons.settings),
-          label: 'Settings',
-        ),
-      ],
     );
   }
 }

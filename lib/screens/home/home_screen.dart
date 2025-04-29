@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: themeProvider.currentTheme.scaffoldBackgroundColor,
+      backgroundColor: ThemeProvider().currentTheme.scaffoldBackgroundColor,
         body: Container(
           child: LocationSearch()
         ),
